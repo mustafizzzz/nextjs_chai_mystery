@@ -31,7 +31,7 @@ export async function GET(request: Request) {
         if (!result.success) {
             return Response.json({
                 success: false,
-                message: result.error.format().username?._errors || 'User name erro'
+                message: result.error.format().username?._errors || 'User name error'
             }, {
                 status: 400
             })
@@ -39,6 +39,8 @@ export async function GET(request: Request) {
 
         const { username } = result.data;
         const existingVerifiedUser = await UserModel.findOne({ username, isVerified: true })
+        // console.log("Verfied user details ::", existingVerifiedUser);
+
         if (existingVerifiedUser) {
             return Response.json({
                 success: false,
@@ -49,7 +51,7 @@ export async function GET(request: Request) {
         }
         return Response.json({
             success: true,
-            message: 'User name is unique you good to go'
+            message: 'User name is unique'
         }, {
             status: 200
         })
