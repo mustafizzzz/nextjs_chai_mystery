@@ -65,10 +65,12 @@ const UserDashboard = () => {
 
             const reponse = await axios.get<ApiResponse>(`/api/get-messages`)
             setMessages(reponse.data.messages || []);
+            console.log('messages', reponse.data.messages);
+
 
             if (refresh) {
                 toast({
-                    title: 'Refreshed MMessges',
+                    title: 'Refreshed Messges',
                     description: 'showing latest messages',
 
                 })

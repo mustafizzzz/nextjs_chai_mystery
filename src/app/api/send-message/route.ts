@@ -13,6 +13,7 @@ export async function POST(request: Request) {
     try {
         const user = await UserModel.findOne({ username });
 
+
         if (!user) {
             return Response.json({
                 success: false,
@@ -20,6 +21,8 @@ export async function POST(request: Request) {
             },
                 { status: 404 })
         }
+
+
 
         //is user accepting the messages
         if (!user.isAcceptingMessage) {

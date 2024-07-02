@@ -34,7 +34,9 @@ type MessageCardProps = {
 const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
 
   const { toast } = useToast();
+
   const handelDeleteConfrim = async () => {
+
     const response = await axios.delete<ApiResponse>(`/api/delete-message/${message._id}`);
     toast({
       title: response.data.message,
@@ -44,8 +46,8 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
   return (
     <div>
       <Card>
-        <CardHeader>
-          <CardTitle>Card Title</CardTitle>
+        <CardHeader className="flex justify-between flex-row">
+          <CardTitle>{message.content}</CardTitle>
 
 
 
@@ -70,10 +72,10 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
 
 
 
-          <CardDescription>Card Description</CardDescription>
+
         </CardHeader>
         <CardContent>
-          <p>Card Content</p>
+          <p className='font-bold'>{new Date(message.createdAt).toLocaleString('en-IN', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}</p>
         </CardContent>
       </Card>
     </div>

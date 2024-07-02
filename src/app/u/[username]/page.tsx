@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 import { set } from 'mongoose';
 import { useParams } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const page = () => {
 
@@ -32,6 +32,17 @@ const page = () => {
                 content: inputMessage
             })
 
+            if (reponse.data.message === 'User not found') {
+                console.log('User not found');
+
+                toast({
+                    title: 'Invalid Username',
+                    description: 'User not found',
+                    variant: 'destructive',
+                })
+
+            }
+
             if (!reponse) {
                 toast({
                     title: 'Sending Failed',
@@ -40,6 +51,7 @@ const page = () => {
                 });
                 setIsLoading(false);
             }
+
 
             toast({
                 title: 'Message Sent successfully',
