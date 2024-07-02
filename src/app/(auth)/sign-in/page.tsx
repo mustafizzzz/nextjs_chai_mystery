@@ -76,7 +76,7 @@ export default function SignUpForm() {
     }
 
     if (result?.url) {
-      router.replace('/dashboard');
+      router.replace('/Dashboard');
 
     }
 

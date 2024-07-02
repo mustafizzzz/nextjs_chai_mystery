@@ -28,6 +28,11 @@ const UserDashboard = () => {
     }
 
     const { data: session } = useSession();
+    const user = session?.user;
+    console.log(":::::::::::", session?.user);
+
+
+
     const form = useForm({
         resolver: zodResolver(acceptMessageSchema),
     })
@@ -115,9 +120,9 @@ const UserDashboard = () => {
 
     }
 
-    const { username } = session?.user as User;
+    // const { username } = session?.user as User;
     const baseURL = `${window.location.protocol}//${window.location.host}`;
-    const profileURL = `${baseURL}/u/${username}`;
+    const profileURL = `${baseURL}/u/${user?.username}`;
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(profileURL);
@@ -126,6 +131,7 @@ const UserDashboard = () => {
             description: 'Profile URL copied to clipboard'
         })
     }
+
     if (!session || !session.user) {
         return (
             <>
