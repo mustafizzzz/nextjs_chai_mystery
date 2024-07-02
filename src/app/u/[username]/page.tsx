@@ -1,6 +1,63 @@
-import React from 'react'
+'use client'
+
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
+import { ApiResponse } from '@/types/apiResponse';
+import axios from 'axios';
+import { Loader2 } from 'lucide-react';
+import { set } from 'mongoose';
+import { useParams } from 'next/navigation';
+import React, { useState } from 'react'
 
 const page = () => {
+
+    const [inputMessage, setInputMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const param = useParams<{ username: string }>();
+    const username = param.username;
+    const { toast } = useToast();
+
+    const handelMessageSend = async () => {
+        setIsLoading(true);
+        try {
+            const reponse = await axios.post<ApiResponse>(`/api/send-message`, {
+                username,
+                content: inputMessage
+            })
+
+            if (!reponse) {
+                toast({
+                    title: 'Sending Failed',
+                    description: 'Error while sending message. Please try again.',
+                    variant: 'destructive',
+                });
+                setIsLoading(false);
+            }
+
+            toast({
+                title: 'Message Sent successfully',
+                variant: 'default',
+            });
+            setInputMessage("");
+            setIsLoading(false);
+
+        } catch (error) {
+            console.log('Error during verification:', error);
+
+            toast({
+                title: 'Sending Failed',
+                description: 'Error while sending message. Please try again.',
+                variant: 'destructive',
+            });
+            setIsLoading(false);
+
+        }
+
+    }
+
+
+
     return (
         <div className="min-h-screen flex flex-col items-center bg-gray-100 py-12">
             <div className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-md">
@@ -9,15 +66,26 @@ const page = () => {
 
                 {/* Subheading and Text Area */}
                 <div className="mb-6">
-                    <p className="text-lg mb-2 text-center">Send anonymous message to @username</p>
+                    <p className="text-lg mb-2 text-center">Send anonymous message to @{username}</p>
                     <textarea
                         className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Write your anonymous message here"
                         rows={2}
+                        onChange={(e) => setInputMessage(e.target.value)}
                     ></textarea>
-                    <button className="w-full mt-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
-                        Send It
-                    </button>
+                    <Button className="w-full mt-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        onClick={handelMessageSend}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Please wait
+                            </>
+                        ) : (
+                            'send message'
+                        )}
+                    </Button>
                 </div>
 
                 {/* Suggest Message Button */}
