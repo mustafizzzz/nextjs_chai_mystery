@@ -12,7 +12,13 @@ import React, { useState } from 'react'
 const page = () => {
 
     const [inputMessage, setInputMessage] = useState("");
+    const [suggestedMessages, setSuggestedMessages] = useState([
+        "What is something or someone that always manages to brighten your day?",
+        "Tell us about a memorable travel experience you've had.",
+        "If you could learn any skill instantly, what would it be?"
+    ]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingSugesstion, setIsLoadingSugesstion] = useState(false);
 
     const param = useParams<{ username: string }>();
     const username = param.username;
@@ -56,6 +62,52 @@ const page = () => {
 
     }
 
+    const handelSuggestMessage = async () => {
+        setIsLoadingSugesstion(true);
+        try {
+            const reponse = await axios.post(`/api/suggest-messages`);
+
+            if (!reponse) {
+                toast({
+                    title: 'Suggesting Failed',
+                    description: 'Error while suggesting message. Please try again.',
+                    variant: 'destructive',
+                });
+                setIsLoadingSugesstion(false);
+            }
+
+            toast({
+                title: 'Message Suggested successfully',
+                variant: 'default',
+            });
+
+
+
+            console.log('Suggested Message:', reponse.data.textData);
+            // Remove double quotes from messages
+            const messagesWithoutQuotes = reponse.data.textData.replace(/"/g, '');
+            // Split messages by '||'
+            const messages = messagesWithoutQuotes.split("||");
+            // const messages = reponse.data.textData.split("||");<==== problem of "" in the message
+
+
+            setSuggestedMessages(messages);
+            setIsLoadingSugesstion(false);
+
+        } catch (error) {
+            console.log('Error during Suggestion messages:', error);
+
+            toast({
+                title: 'Suggesting Failed',
+                description: 'Error while suggesting message. Please try again.',
+                variant: 'destructive',
+            });
+            setIsLoadingSugesstion(false);
+
+        }
+
+    }
+
 
 
     return (
@@ -72,6 +124,7 @@ const page = () => {
                         placeholder="Write your anonymous message here"
                         rows={2}
                         onChange={(e) => setInputMessage(e.target.value)}
+                        value={inputMessage}
                     ></textarea>
                     <Button className="w-full mt-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
                         onClick={handelMessageSend}
@@ -80,30 +133,45 @@ const page = () => {
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Please wait
+                                Please wait...
                             </>
                         ) : (
-                            'send message'
+                            'Send Message'
                         )}
                     </Button>
                 </div>
 
                 {/* Suggest Message Button */}
                 <div className="mb-6">
-                    <button className="w-full py-2 mb-4 bg-blue-800 text-white rounded-lg hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                        Suggest Messages
-                    </button>
+                    <Button className="w-full py-2 mb-4 bg-blue-800 text-white rounded-lg hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        onClick={handelSuggestMessage}
+                        disabled={isLoadingSugesstion}>
+                        {isLoadingSugesstion ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Please wait...
+                            </>
+                        ) : (
+                            'Suggest Message'
+                        )}
+                    </Button>
+
                     <p className="text-center mb-4">Click on any message below to select it.</p>
+
                     <div className="flex flex-col items-center space-y-2">
-                        <button className="w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                        {/* <button className="w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">
                             What is something or someone that always manages to brighten your day?
-                        </button>
-                        <button className="w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">
-                            Tell us about a memorable travel experience you've had.
-                        </button>
-                        <button className="w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">
-                            If you could learn any skill instantly, what would it be?
-                        </button>
+                        </button> */}
+                        {suggestedMessages.map((message, index) => (
+                            <button
+                                key={index}
+                                className="w-full py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                                onClick={() => setInputMessage(message)}
+                            >
+                                {message}
+                            </button>
+                        ))}
+
                     </div>
                 </div>
 

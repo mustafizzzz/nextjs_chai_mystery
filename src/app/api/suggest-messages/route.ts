@@ -36,7 +36,7 @@ export async function POST(req: Request) {
         } else {
             return Response.json({
                 success: true,
-                data: text
+                textData: text
             })
 
         }
