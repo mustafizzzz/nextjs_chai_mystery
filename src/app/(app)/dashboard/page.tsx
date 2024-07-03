@@ -150,10 +150,10 @@ const UserDashboard = () => {
     const [profileURL, setProfileURL] = useState<string>('');
 
     useEffect(() => {
-        if (isClient && user) {
-            const baseURL = `${window.location.protocol}//${window.location.host}`;
-            setProfileURL(`${baseURL}/u/${user.username}`);
-        }
+
+        const baseURL = `${window.location.protocol}//${window.location.host}`;
+        setProfileURL(`${baseURL}/u/${user?.username}`);
+
     }, [session, setValue, fetchAcceptMessage, fetchMessages]);
 
     const copyToClipboard = () => {
