@@ -5,11 +5,10 @@ import { useToast } from '@/components/ui/use-toast';
 import { ApiResponse } from '@/types/apiResponse';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';
-import { set } from 'mongoose';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
-const page = () => {
+const Page = () => {
 
     const [inputMessage, setInputMessage] = useState("");
     const [suggestedMessages, setSuggestedMessages] = useState([
@@ -198,4 +197,4 @@ const page = () => {
 
 
 
-export default page
+export default Page
