@@ -43,7 +43,7 @@ export async function GET(request: Request) {
                 { status: 404 })
 
         }
-        console.log('messages fectehed');
+
 
 
         return Response.json({

@@ -29,7 +29,7 @@ const UserDashboard = () => {
 
     const { data: session } = useSession();
     const user = session?.user;
-    console.log(":::::::::::", session?.user);
+    // console.log(":::::::::::", session?.user);
 
 
 
@@ -43,6 +43,8 @@ const UserDashboard = () => {
         setIsSwitchLoading(true);
         try {
             const reponse = await axios.get<ApiResponse>(`/api/accept-messages`);
+            console.log('acceptMessges from Db:::', reponse.data.isAcceptingMessage);
+
             setValue('acceptMessges', reponse.data.isAcceptingMessage);
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>;
@@ -68,6 +70,14 @@ const UserDashboard = () => {
             console.log('messages', reponse.data.messages);
 
 
+            const reponse2 = await axios.get<ApiResponse>(`/api/accept-messages`);
+            console.log('acceptMessges from Db:::', reponse2.data.isAcceptingMessage);
+
+            setValue('acceptMessges', reponse2.data.isAcceptingMessage);
+
+
+
+
             if (refresh) {
                 toast({
                     title: 'Refreshed Messges',
@@ -75,6 +85,12 @@ const UserDashboard = () => {
 
                 })
             }
+
+
+
+
+
+
 
 
         } catch (error) {
@@ -102,9 +118,14 @@ const UserDashboard = () => {
     //handle switch change
     const handelSwitchChange = async () => {
         try {
+            console.log('inside handelSwitchChange', acceptMessges);
+
+
             const response = await axios.post<ApiResponse>(`/api/accept-messages`, {
                 acceptMessges: !acceptMessges,
             })
+            console.log('response of isAceptimg', response.data);
+
             setValue('acceptMessges', !acceptMessges);
             toast({
                 title: response.data.message,

@@ -28,7 +28,7 @@ import { ApiResponse } from '@/types/apiResponse'
 
 type MessageCardProps = {
   message: Message,
-  onMessageDelete: (messageId: string) => void;
+  onMessageDelete: (messageId: any) => void;
 }
 
 const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
@@ -38,10 +38,12 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
   const handelDeleteConfrim = async () => {
 
     const response = await axios.delete<ApiResponse>(`/api/delete-message/${message._id}`);
+
     toast({
       title: response.data.message,
     })
-    onMessageDelete(message.content);//toDo
+    // console.log("Message ka content dekh ::::", message._id);
+    onMessageDelete(message._id);
   }
   return (
     <div>
