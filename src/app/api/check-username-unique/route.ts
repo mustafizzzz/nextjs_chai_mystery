@@ -70,9 +70,9 @@ export async function GET(request: Request) {
         console.log('error in check-username-unique', error);
         return new Response(JSON.stringify(
             {
-            success: false,
-            message: "Error in check-username-unique",
-        }), {
+                success: false,
+                message: "Error in check-username-unique",
+            }), {
             status: 500,
         });
 

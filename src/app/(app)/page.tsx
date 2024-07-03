@@ -65,7 +65,7 @@ export default function Home() {
 
       </main>
 
-      {/* Footer */}
+      {/* Footer page*/}
       <footer className="text-center p-4 md:p-8 bg-gray-900 text-white">
         © 2023 True Feedback. All rights reserved.
       </footer>
