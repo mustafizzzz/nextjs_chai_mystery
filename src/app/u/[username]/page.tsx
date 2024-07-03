@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 import { set } from 'mongoose';
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react';
 
 const page = () => {
 
