@@ -4,12 +4,11 @@ import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // const openai = new OpenAI({
-//     apiKey: "sk-proj-Pq8eF2oQ6PZXsegcT7ZLT3BlbkFJlyw65qNkANj8tBUj231p",
+//     apiKey: "",
 //     //process.env.OPENAI_API_KEY,
 // });
 
-const genAI = new GoogleGenerativeAI("AIzaSyAQXXRZjtLLf55rG6w1Wc0znHOavPj20xc");
-
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 
 export const runtime = 'edge';
