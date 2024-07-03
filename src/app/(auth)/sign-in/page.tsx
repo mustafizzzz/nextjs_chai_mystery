@@ -41,6 +41,7 @@ export default function SignUpForm() {
 
   const router = useRouter();
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -51,6 +52,8 @@ export default function SignUpForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    setIsLoading(true);
+
     const result = await signIn('credentials', {
       redirect: false,
       identifier: data.identifier,
@@ -67,6 +70,7 @@ export default function SignUpForm() {
         })
 
       }
+      setIsLoading(false);
 
       toast({
         title: 'Login failed',
@@ -74,6 +78,8 @@ export default function SignUpForm() {
         variant: 'destructive'
       })
     }
+
+    setIsLoading(false);
 
     if (result?.url) {
       router.replace('/dashboard');
@@ -116,8 +122,17 @@ export default function SignUpForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className='w-full'>
-              Signin
+            <Button type="submit" className='w-full' disabled={isLoading}>
+              <>
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Please wait
+                  </>
+                ) : (
+                  'Sign Up'
+                )}
+              </>
             </Button>
           </form>
         </Form>
