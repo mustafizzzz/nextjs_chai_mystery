@@ -68,7 +68,8 @@ export async function GET(request: Request) {
     } catch (error) {
 
         console.log('error in check-username-unique', error);
-        return new Response(JSON.stringify({
+        return new Response(JSON.stringify(
+            {
             success: false,
             message: "Error in check-username-unique",
         }), {
