@@ -154,7 +154,7 @@ const UserDashboard = () => {
             const baseURL = `${window.location.protocol}//${window.location.host}`;
             setProfileURL(`${baseURL}/u/${user.username}`);
         }
-    }, [user]);
+    }, [session, setValue, fetchAcceptMessage, fetchMessages]);
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(profileURL);
