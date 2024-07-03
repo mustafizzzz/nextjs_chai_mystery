@@ -177,20 +177,22 @@ const UserDashboard = () => {
         <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
             <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
 
-            {isClient && (
-                <div className="mb-4">
-                    <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{' '}
-                    <div className="flex items-center">
+
+            <div className="mb-4">
+                <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{' '}
+                <div className="flex items-center">
+                    {isClient && (
                         <input
                             type="text"
                             value={profileURL || 'Url is loading...'}
                             disabled
                             className="input input-bordered w-full p-2 mr-2"
                         />
-                        <Button onClick={copyToClipboard}>Copy</Button>
-                    </div>
+                    )}
+                    <Button onClick={copyToClipboard}>Copy</Button>
                 </div>
-            )}
+            </div>
+
 
             <div className="mb-4">
                 <Switch
