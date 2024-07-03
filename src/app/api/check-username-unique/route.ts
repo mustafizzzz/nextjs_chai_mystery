@@ -8,7 +8,11 @@ import { z } from "zod";
 const UserNameQuerySchema = z.object({
     username: usernameValidation
 });
-export const dynamic = 'force-dynamic';
+export const config = {
+    api: {
+        bodyParser: false, // Disable body parsing since we're using query params
+    },
+};
 
 export async function GET(request: Request) {
 
@@ -30,12 +34,12 @@ export async function GET(request: Request) {
         const result = UserNameQuerySchema.safeParse(queryParam);
         console.log('result', result);//check only
         if (!result.success) {
-            return Response.json({
+            return new Response(JSON.stringify({
                 success: false,
-                message: result.error.format().username?._errors || 'User name error'
-            }, {
-                status: 400
-            })
+                message: result.error.format().username?._errors || "Username error",
+            }), {
+                status: 400,
+            });
         }
 
         const { username } = result.data;
@@ -43,19 +47,20 @@ export async function GET(request: Request) {
         // console.log("Verfied user details ::", existingVerifiedUser);
 
         if (existingVerifiedUser) {
-            return Response.json({
+            return new Response(JSON.stringify({
                 success: false,
-                message: 'User name is already taken'
-            }, {
-                status: 400
-            })
+                message: "Username is already taken",
+            }), {
+                status: 400,
+            });
         }
-        return Response.json({
+
+        return new Response(JSON.stringify({
             success: true,
-            message: 'User name is unique'
-        }, {
-            status: 200
-        })
+            message: "Username is unique",
+        }), {
+            status: 200,
+        });
 
 
 
@@ -63,12 +68,12 @@ export async function GET(request: Request) {
     } catch (error) {
 
         console.log('error in check-username-unique', error);
-        return Response.json({
+        return new Response(JSON.stringify({
             success: false,
-            message: 'error in check-username-unique'
-        }, {
-            status: 500
-        })
+            message: "Error in check-username-unique",
+        }), {
+            status: 500,
+        });
 
 
     }

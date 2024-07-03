@@ -15,6 +15,8 @@ import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useIsClient } from "usehooks-ts";
+
 
 const UserDashboard = () => {
     const [messages, setMessages] = useState<Message[]>([]);
@@ -144,10 +146,11 @@ const UserDashboard = () => {
     }
 
     // Define `profileURL` within a `useEffect` to ensure it runs only on the client
+    const isClient = useIsClient();
     const [profileURL, setProfileURL] = useState<string>('');
 
     useEffect(() => {
-        if (typeof window !== 'undefined' && user) {
+        if (isClient && user) {
             const baseURL = `${window.location.protocol}//${window.location.host}`;
             setProfileURL(`${baseURL}/u/${user.username}`);
         }
@@ -174,18 +177,20 @@ const UserDashboard = () => {
         <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
             <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
 
-            <div className="mb-4">
-                <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{' '}
-                <div className="flex items-center">
-                    <input
-                        type="text"
-                        value={profileURL}
-                        disabled
-                        className="input input-bordered w-full p-2 mr-2"
-                    />
-                    <Button onClick={copyToClipboard}>Copy</Button>
+            {isClient && (
+                <div className="mb-4">
+                    <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{' '}
+                    <div className="flex items-center">
+                        <input
+                            type="text"
+                            value={profileURL}
+                            disabled
+                            className="input input-bordered w-full p-2 mr-2"
+                        />
+                        <Button onClick={copyToClipboard}>Copy</Button>
+                    </div>
                 </div>
-            </div>
+            )}
 
             <div className="mb-4">
                 <Switch
