@@ -183,7 +183,7 @@ const UserDashboard = () => {
                     <div className="flex items-center">
                         <input
                             type="text"
-                            value={profileURL}
+                            value={profileURL || 'Url is loading...'}
                             disabled
                             className="input input-bordered w-full p-2 mr-2"
                         />
