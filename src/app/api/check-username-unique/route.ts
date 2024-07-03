@@ -8,6 +8,7 @@ import { z } from "zod";
 const UserNameQuerySchema = z.object({
     username: usernameValidation
 });
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
 

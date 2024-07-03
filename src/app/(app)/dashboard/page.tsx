@@ -143,9 +143,15 @@ const UserDashboard = () => {
 
     }
 
-    // const { username } = session?.user as User;
-    const baseURL = `${window.location.protocol}//${window.location.host}`;
-    const profileURL = `${baseURL}/u/${user?.username}`;
+    // Define `profileURL` within a `useEffect` to ensure it runs only on the client
+    const [profileURL, setProfileURL] = useState<string>('');
+
+    useEffect(() => {
+        if (typeof window !== 'undefined' && user) {
+            const baseURL = `${window.location.protocol}//${window.location.host}`;
+            setProfileURL(`${baseURL}/u/${user.username}`);
+        }
+    }, [user]);
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(profileURL);
