@@ -8,11 +8,7 @@ import { z } from "zod";
 const UserNameQuerySchema = z.object({
     username: usernameValidation
 });
-export const config = {
-    api: {
-        bodyParser: false, // Disable body parsing since we're using query params
-    },
-};
+export const dynamicParams = true
 
 export async function GET(request: Request) {
 
